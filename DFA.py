@@ -1,34 +1,48 @@
-def Simulate_DFA(Input_String, Move, Start_State, Accept_States):  # Định nghĩa một hàm mô phỏng DFA với chuỗi đầu vào, hàm chuyển, trạng thái bắt đầu và tập trạng thái chấp nhận
-    # Khởi tạo trạng thái hiện tại là trạng thái bắt đầu
+def DFA(Input_String, Move, Start_State, Accept_States):
+
     Current_State = Start_State
 
-    # Duyệt qua từng ký tự trong chuỗi đầu vào
-    for Char in Input_String:
-        # Cập nhật trạng thái hiện tại dựa trên hàm chuyển và ký tự hiện tại
-        Current_State = Move[(Current_State, Char)]
+    print("Thứ tự chuyển đổi trạng thái:")
 
-    # Kiểm tra xem trạng thái cuối cùng có thuộc tập trạng thái chấp nhận hay không
+    for Char in Input_String:
+
+        Prev_State = Current_State
+
+        Current_State = Move[Current_State, Char]
+
+        Print_Move(Prev_State, Current_State, Char)
+
     if Current_State in Accept_States:
         print("Chuỗi '{0}' được chấp nhận".format(Input_String))
     else:
         print("Không chấp nhận chuỗi '{0}'".format(Input_String))
 
-# Định nghĩa hàm chuyển và tập trạng thái chấp nhận
-Move = {('Q0', '0'): 'Q2',
-        ('Q0', '1'): 'Q1',
-        ('Q1', '0'): 'Q3',
-        ('Q1', '1'): 'Q0',
-        ('Q2', '0'): 'Q0',
-        ('Q2', '1'): 'Q3',
-        ('Q3', '0'): 'Q1',
-        ('Q3', '1'): 'Q2',}
+def Print_Move(Prev_State, Curent_State, Char):
+    print("({0},{1}) => {2}".format(Prev_State,Char,Curent_State))
 
-Start_State = 'Q0'  # Định nghĩa trạng thái bắt đầu của DFA
+def Read_Data():
+    with open("DFA.txt",'r') as File:
+        Lines = File.readlines()
+        for Item in Lines:
+            Line = Item.split()
+            Move[Line[0],Line[1]] = Line[2]
 
-Accept_States = ['Q0']  # Định nghĩa tập trạng thái chấp nhận của DFA
 
-# Chuỗi đầu vào
-Input_String = "01110010"
+Move = dict()
 
-# Gọi hàm mô phỏng DFA
-Simulate_DFA(Input_String, Move, Start_State, Accept_States)
+Start = 'Q0'
+
+Accept = ['Q0']
+
+Read_Data()
+
+while True:
+    Input_String = input("Nhập vào chuỗi nhị phân:")
+    Valid = 0
+    for Item in Input_String:
+        if Item in ('0','1'):
+            Valid += 1
+    if Valid == len(Input_String):
+        break
+
+DFA(Input_String, Move, Start, Accept)
