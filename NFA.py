@@ -23,7 +23,7 @@ class NFA:
         return any(State in self.Accept_States for State in Current_States)
 
 def Print_Move(Prev, Curent, Symbol):
-    print("({:<10},{}) => {:>10}\n".format(''.join(Prev),Symbol,''.join(Curent)))
+    print("({:<10},{}) => {:>10}".format(''.join(Prev),Symbol,''.join(Curent)))
 
 def Read_Data():
     with open("NFA.txt",'r') as File:
